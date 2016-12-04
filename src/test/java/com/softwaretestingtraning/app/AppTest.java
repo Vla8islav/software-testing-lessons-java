@@ -2,9 +2,7 @@ package com.softwaretestingtraning.app;
 
 import org.apache.commons.io.FileUtils;
 import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,7 +15,7 @@ public class AppTest {
     private Path tempDirectory;
     private String fileName;
 
-    @BeforeMethod
+    @BeforeClass
     public void exampleBeforeMethod() {
         System.out.println("Creating temporary directory.");
         try {
@@ -39,7 +37,7 @@ public class AppTest {
         }
     }
 
-    @AfterMethod
+    @AfterClass
     public void exampleAfterMethod(){
         System.out.println("Removing temporary directory.");
         try {
