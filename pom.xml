@@ -1,5 +1,12 @@
 <?xml version="1.0"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <repositories>
+    <repository>
+      <id>bintray-cbeust-maven</id>
+      <name>bintray</name>
+      <url>http://dl.bintray.com/cbeust/maven</url>
+    </repository>
+  </repositories>
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.softwaretestingtraning.app</groupId>
   <artifactId>practical-task-01</artifactId>
@@ -14,7 +21,7 @@
     <dependency>
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
-      <version>6.9.13.6</version>
+      <version>6.10</version>
     </dependency>
     <!-- https://mvnrepository.com/artifact/com.codeborne/selenide -->
     <dependency>
