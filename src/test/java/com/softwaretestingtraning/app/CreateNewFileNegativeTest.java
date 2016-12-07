@@ -7,7 +7,7 @@ import java.io.File;
 import java.io.IOException;
 
 @Test
-public class CreateNewFileNegativeTest extends AppTestBase {
+public class CreateNewFileNegativeTest extends CreateNewFileTestBase {
 
     public void testAttemptToCreateAFileInNonexistentDirectory() {
         String fileNameInvalidDirectory = tempDirectory.toString() + "nonexistentDir/" + fileName;

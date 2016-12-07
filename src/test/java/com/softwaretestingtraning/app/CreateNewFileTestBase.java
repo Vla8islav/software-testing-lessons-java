@@ -12,7 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 @Test
-public class AppTestBase {
+public class CreateNewFileTestBase {
 
     protected Path tempDirectory;
     protected String fileName;
