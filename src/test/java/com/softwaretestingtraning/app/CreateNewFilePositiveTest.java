@@ -6,7 +6,7 @@ import java.io.File;
 import java.io.IOException;
 
 @Test
-public class AppTest extends AppTestBase {
+public class CreateNewFilePositiveTest extends AppTestBase {
 
     public void testFileExists() {
             File file = new File(fileName);
@@ -26,5 +26,6 @@ public class AppTest extends AppTestBase {
             System.err.println(e.getMessage());
         }
     }
+
 }
 
