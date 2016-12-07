@@ -14,7 +14,7 @@ import java.nio.file.Path;
 @Test
 public class AppTestBase {
 
-    private Path tempDirectory;
+    protected Path tempDirectory;
     protected String fileName;
 
     @BeforeClass
