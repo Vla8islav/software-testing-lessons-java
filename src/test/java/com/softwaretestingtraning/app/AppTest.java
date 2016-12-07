@@ -1,50 +1,30 @@
 package com.softwaretestingtraning.app;
 
-import org.apache.commons.io.FileUtils;
 import org.testng.Assert;
 import org.testng.annotations.*;
-
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 @Test
-public class AppTest {
+public class AppTest extends AppTestBase {
 
-    private Path tempDirectory;
-    private String fileName;
+    public void testFileExists() {
+            File file = new File(fileName);
+            Assert.assertTrue(file.exists(), "File creation failed.");
+    }
 
-    @BeforeClass
-    public void exampleBeforeMethod() {
-        System.out.println("Creating temporary directory.");
+    public void testFileIsEmpty() {
+        File file = new File(fileName);
+        Assert.assertEquals(file.length(), 0, "Created file is not empty.");
+    }
+
+    public void testFileCannotBeCreatedIfAlreadyExists() {
         try {
-            tempDirectory = Files.createTempDirectory("test-createNewFile-directory");
-            fileName = tempDirectory.toString() + fileName;
-            System.out.println("TMP: " + tempDirectory.toString());
+            File file = new File(fileName);
+            Assert.assertFalse(file.createNewFile(), "File does not exist. Your set up method is probably broken.");
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
     }
-
-    public void testFirst() {
-        File file = new File(fileName);
-        try {
-            Assert.assertTrue(file.createNewFile(), "File already exists");
-        }
-        catch (IOException e){
-            System.err.println(e.getMessage());
-        }
-    }
-
-    @AfterClass
-    public void exampleAfterMethod(){
-        System.out.println("Removing temporary directory.");
-        try {
-            FileUtils.deleteDirectory(new File(tempDirectory.toString()));
-        }
-        catch (IOException e){
-            System.err.println(e.getMessage());
-        }
-    }
 }
+
