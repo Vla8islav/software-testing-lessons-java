@@ -2,6 +2,7 @@ package com.softwaretestingtraning.app;
 
 import org.testng.Assert;
 import org.testng.annotations.*;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -10,8 +11,9 @@ public class CreateNewFilePositiveTest extends CreateNewFileTestBase {
 
     @Test(groups = {"positive"})
     public void testFileExists() {
-            File file = new File(fileName);
-            Assert.assertTrue(file.exists(), "File creation failed.");
+        System.out.println("Running first positive test");
+        File file = new File(fileName);
+        Assert.assertTrue(file.exists(), "File creation failed.");
     }
 
     @Test(groups = {"positive"})

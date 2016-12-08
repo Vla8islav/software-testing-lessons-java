@@ -11,6 +11,7 @@ public class CreateNewFileNegativeTest extends CreateNewFileTestBase {
 
     @Test(groups = {"negative"})
     public void testAttemptToCreateAFileInWithTheIncorrectFilename() {
+        System.out.println("Running first negative test.");
         String fileNameInvalidDirectory = tempDirectory.toString() + "//";
         try {
             File file = new File(fileNameInvalidDirectory);
