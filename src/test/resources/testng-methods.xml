@@ -3,8 +3,16 @@
 <suite name="Suite1" verbose="1" >
     <test name="Test1"   >
         <classes>
-            <class name="com.softwaretestingtraning.app.CreateNewFilePositiveTest" />
-            <class name="com.softwaretestingtraning.app.CreateNewFileNegativeTest" />
+            <class name="com.softwaretestingtraning.app.CreateNewFilePositiveTest" >
+                <methods>
+                    <include name="testFileIsEmpty" />
+                </methods>
+            </class>
+            <class name="com.softwaretestingtraning.app.CreateNewFileNegativeTest" >
+                <methods>
+                    <exclude name="testAttemptToCreateAFileInWithTheIncorrectFilename" />
+                </methods>
+            </class>
         </classes>
     </test>
 </suite>
