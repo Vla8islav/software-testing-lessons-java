@@ -1,0 +1,16 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="Suite1" verbose="1">
+    <test name="Test2">
+        <groups>
+            <run>
+                <include name="positive"  />
+                <exclude name="broken"  />
+                <exclude name="selenium"  />
+            </run>
+        </groups>
+        <packages>
+            <package name="com.softwaretestingtraning.app"/>
+        </packages>
+    </test>
+</suite>

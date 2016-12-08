@@ -23,7 +23,7 @@ public class CreateNewFileTestBase {
     protected Path tempDirectoryWithoutWritingPermissions;
     protected String fileName;
 
-    @BeforeClass
+    @BeforeClass(alwaysRun = true)
     public void exampleBeforeMethod() {
         System.out.println("Creating temporary directory.");
         try {
@@ -47,7 +47,7 @@ public class CreateNewFileTestBase {
         }
     }
 
-    @AfterClass
+    @AfterClass(alwaysRun = true)
     public void exampleAfterMethod(){
         System.out.println("Removing temporary directory.");
         try {

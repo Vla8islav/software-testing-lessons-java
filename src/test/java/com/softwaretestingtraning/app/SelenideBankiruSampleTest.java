@@ -12,19 +12,20 @@ import static com.codeborne.selenide.Selenide.open;
 @Test
 public class SelenideBankiruSampleTest {
 
-    @BeforeClass
+    @BeforeClass(alwaysRun = true)
     public void exampleBeforeMethod() {
         System.out.println("Setting Chromium as a default browser.");
         Configuration.browser = "Chrome";
         System.setProperty("webdriver.chrome.driver", "/usr/lib/chromium-browser/chromedriver");
     }
 
+    @Test(groups = {"positive", "selenium"})
     public void testNewsMainPage() {
         open("http://www.banki.ru/news/");
         $("img.header__logo__img").shouldBe(visible);
     }
 
-    @AfterClass
+    @AfterClass(alwaysRun = true)
     public void exampleAfterMethod(){
         System.out.println("Exiting sample selenide test");
     }

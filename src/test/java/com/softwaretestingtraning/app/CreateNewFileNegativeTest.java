@@ -9,6 +9,7 @@ import java.io.IOException;
 @Test
 public class CreateNewFileNegativeTest extends CreateNewFileTestBase {
 
+    @Test(groups = {"negative"})
     public void testAttemptToCreateAFileInWithTheIncorrectFilename() {
         String fileNameInvalidDirectory = tempDirectory.toString() + "//";
         try {
@@ -19,6 +20,7 @@ public class CreateNewFileNegativeTest extends CreateNewFileTestBase {
         }
     }
 
+    @Test(groups = {"negative"})
     public void testAttemptToCreateAFileInWithoutWritingPermissions() {
         String fileNameInvalidDirectory = tempDirectoryWithoutWritingPermissions.toString() + "/filename";
         try {
