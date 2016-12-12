@@ -20,6 +20,7 @@ import java.util.Set;
 public class CreateNewFileTestBase {
 
     protected Path tempDirectory;
+    protected Path tempDirectory2;
     protected Path tempDirectoryWithoutWritingPermissions;
     protected String fileName;
 
@@ -28,6 +29,7 @@ public class CreateNewFileTestBase {
         System.out.println("Creating temporary directory.");
         try {
             tempDirectory = Files.createTempDirectory("test-createNewFile-directory");
+            tempDirectory2 = Files.createTempDirectory("test-createNewFile-directory-2");
             fileName = tempDirectory.toString() + "/" + fileName;
             System.out.println("TMP: " + tempDirectory.toString());
             File file = new File(fileName);
@@ -52,6 +54,7 @@ public class CreateNewFileTestBase {
         System.out.println("Removing temporary directory.");
         try {
             FileUtils.deleteDirectory(new File(tempDirectory.toString()));
+            FileUtils.deleteDirectory(new File(tempDirectory2.toString()));
         }
         catch (IOException e){
             System.err.println(e.getMessage());
