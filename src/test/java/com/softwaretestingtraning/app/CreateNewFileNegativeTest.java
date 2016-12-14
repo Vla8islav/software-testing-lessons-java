@@ -22,7 +22,7 @@ public class CreateNewFileNegativeTest extends CreateNewFileTestBase {
     }
 
     @Test(groups = {"negative"})
-    public void testAttemptToCreateAFileInWithoutWritingPermissions() {
+    public void testAttemptToCreateAFileInFolderWithoutWritingPermissions() {
         String fileNameInvalidDirectory = tempDirectoryWithoutWritingPermissions.toString() + "/filename";
         try {
             File file = new File(fileNameInvalidDirectory);
