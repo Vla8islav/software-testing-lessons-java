@@ -32,8 +32,6 @@ public class CreateNewFileTestBase {
             tempDirectory2 = Files.createTempDirectory("test-createNewFile-directory-2");
             fileName = tempDirectory.toString() + "/" + fileName;
             System.out.println("TMP: " + tempDirectory.toString());
-            File file = new File(fileName);
-            file.createNewFile();
 
             Set<PosixFilePermission> perms =
                     PosixFilePermissions.fromString("r-xr-xr-x");
