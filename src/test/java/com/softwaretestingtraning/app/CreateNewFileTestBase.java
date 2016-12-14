@@ -31,7 +31,7 @@ public class CreateNewFileTestBase {
             fileName = tempDirectory.toString() + "/" + fileName;
             System.out.println("TMP: " + tempDirectory.toString());
             File file = new File(fileName);
-            Assert.assertTrue(file.createNewFile(), "File already exists. Your cleanup method is probably broken.");
+            file.createNewFile();
 
             Set<PosixFilePermission> perms =
                     PosixFilePermissions.fromString("r-xr-xr-x");
