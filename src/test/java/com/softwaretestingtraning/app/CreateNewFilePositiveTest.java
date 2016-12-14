@@ -23,19 +23,6 @@ public class CreateNewFilePositiveTest extends CreateNewFileTestBase {
         }
     }
 
-    @Test(groups = {"positive"})
-    public void testFileCannotBeCreatedIfAlreadyExists() {
-        try {
-            File file = new File(fileName);
-            if(!file.exists()){
-                file.createNewFile();
-            }
-            Assert.assertFalse(file.createNewFile(), "Successfully created already existing file.");
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
-        }
-    }
-
     @Test(groups = {"positive", "broken"})
     public void testFileIsEmptyIncorrect() {
         File file = new File(fileName);
