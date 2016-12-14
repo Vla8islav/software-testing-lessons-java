@@ -13,7 +13,7 @@ public class CreateNewFileTestBase {
     Path tempDirectory;
     String fileName;
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void exampleBeforeMethod() throws IOException {
         System.out.println("Creating temporary directory.");
         tempDirectory = Files.createTempDirectory("test-createNewFile-directory");
@@ -21,7 +21,7 @@ public class CreateNewFileTestBase {
         System.out.println("TMP: " + tempDirectory.toString());
     }
 
-    @AfterMethod
+    @AfterMethod(alwaysRun = true)
     public void exampleAfterMethod() throws IOException {
         System.out.println("Removing temporary directory.");
         FileUtils.deleteDirectory(new File(tempDirectory.toString()));
