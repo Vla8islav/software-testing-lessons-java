@@ -10,23 +10,26 @@ import java.io.IOException;
 public class CreateNewFilePositiveTest extends CreateNewFileTestBase {
 
     @Test(groups = {"positive"})
-    public void testFileExists() {
+    public void testFileCreationParameters() {
         System.out.println("Running first positive test");
-        File file = new File(fileName);
-        Assert.assertTrue(file.exists(), "File creation failed.");
-    }
-
-    @Test(groups = {"positive"})
-    public void testFileIsEmpty() {
-        File file = new File(fileName);
-        Assert.assertEquals(file.length(), 0, "Created file is not empty.");
+        try {
+            File file = new File(fileName);
+            Assert.assertTrue(file.createNewFile(), "File already exists. Your cleanup method is probably broken.");
+            Assert.assertTrue(file.exists(), "File creation failed.");
+            Assert.assertEquals(file.length(), 0, "Created file is not empty.");
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+        }
     }
 
     @Test(groups = {"positive"})
     public void testFileCannotBeCreatedIfAlreadyExists() {
         try {
             File file = new File(fileName);
-            Assert.assertFalse(file.createNewFile(), "File does not exist. Your set up method is probably broken.");
+            if(!file.exists()){
+                file.createNewFile();
+            }
+            Assert.assertFalse(file.createNewFile(), "Successfully created already existing file.");
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
