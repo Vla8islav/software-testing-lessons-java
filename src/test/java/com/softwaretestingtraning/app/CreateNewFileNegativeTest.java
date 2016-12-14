@@ -2,10 +2,18 @@ package com.softwaretestingtraning.app;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.attribute.FileAttribute;
+import java.nio.file.attribute.PosixFilePermission;
+import java.nio.file.attribute.PosixFilePermissions;
+import java.util.Set;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -14,6 +22,19 @@ import static java.lang.Math.pow;
 
 @Test
 public class CreateNewFileNegativeTest extends CreateNewFileTestBase {
+
+    private Path tempDirectoryWithoutWritingPermissions;
+
+    @BeforeMethod
+    public void beforeNegativeTests() throws IOException {
+        System.out.println("Creating temporary directory without writing permissions");
+        Set<PosixFilePermission> perms =
+                PosixFilePermissions.fromString("r-xr-xr-x");
+        FileAttribute<Set<PosixFilePermission>> attr =
+                PosixFilePermissions.asFileAttribute(perms);
+        Path nonWritableDir = Paths.get(tempDirectory.toString(), "nonWritableDir");
+        tempDirectoryWithoutWritingPermissions = Files.createDirectory(nonWritableDir, attr);
+    }
 
     /**
      * Produces Fat32 limit of filenames
@@ -32,39 +53,27 @@ public class CreateNewFileNegativeTest extends CreateNewFileTestBase {
     }
 
     @Test(groups = {"negative"})
-    public void testAttemptToCreateAFileInWithTheIncorrectFilename() {
+    public void testAttemptToCreateAFileInWithTheIncorrectFilename() throws IOException {
         System.out.println("Running first negative test.");
         String fileNameInvalidDirectory = tempDirectory.toString() + "//";
-        try {
-            File file = new File(fileNameInvalidDirectory);
-            Assert.assertFalse(file.createNewFile(), "You just successfully created the file named '/'. It's not allowed it Windows and in most -nix distributions.");
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
-        }
+        File file = new File(fileNameInvalidDirectory);
+        Assert.assertFalse(file.createNewFile(), "You just successfully created the file named '/'. It's not allowed it Windows and in most -nix distributions.");
     }
 
-    @Test(groups = {"negative"})
-    public void testAttemptToCreateAFileInFolderWithoutWritingPermissions() {
+    @Test(groups = {"negative"}, expectedExceptions = { IOException.class })
+    public void testAttemptToCreateAFileInFolderWithoutWritingPermissions() throws IOException {
         String fileNameInvalidDirectory = tempDirectoryWithoutWritingPermissions.toString() + "/filename";
-        try {
-            File file = new File(fileNameInvalidDirectory);
-            Assert.assertFalse(file.createNewFile(), "You just successfully created the file in the directory without writing permissions.");
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
-        }
+        File file = new File(fileNameInvalidDirectory);
+        Assert.assertFalse(file.createNewFile(), "You just successfully created the file in the directory without writing permissions.");
     }
 
     @Test(groups = {"negative"})
-    public void testFileCannotBeCreatedIfAlreadyExists() {
-        try {
-            File file = new File(fileName);
-            Assert.assertTrue(file.createNewFile(),
-                    "Something went wrong during the test. The target directory is not empty");
-            Assert.assertFalse(file.createNewFile(),
-                    "Successfully created already existing file.");
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
-        }
+    public void testFileCannotBeCreatedIfAlreadyExists() throws IOException {
+        File file = new File(fileName);
+        Assert.assertTrue(file.createNewFile(),
+                "Something went wrong during the test. The target directory is not empty");
+        Assert.assertFalse(file.createNewFile(),
+                "Successfully created already existing file.");
     }
 
     @Test(groups = {"negative", "long"}, dataProvider = "getFat32LimitFileNames")
