@@ -32,5 +32,17 @@ public class CreateNewFileNegativeTest extends CreateNewFileTestBase {
         }
     }
 
+    @Test(groups = {"negative"})
+    public void testFileCannotBeCreatedIfAlreadyExists() {
+        try {
+            File file = new File(fileName);
+            Assert.assertTrue(file.createNewFile(),
+                    "Something went wrong during the test. The target directory is not empty");
+            Assert.assertFalse(file.createNewFile(),
+                    "Successfully created already existing file.");
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+        }
+    }
 }
 
