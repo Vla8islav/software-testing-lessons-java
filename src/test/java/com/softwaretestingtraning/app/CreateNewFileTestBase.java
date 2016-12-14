@@ -2,9 +2,7 @@ package com.softwaretestingtraning.app;
 
 import org.apache.commons.io.FileUtils;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,7 +22,7 @@ public class CreateNewFileTestBase {
     Path tempDirectoryWithoutWritingPermissions;
     String fileName;
 
-    @BeforeClass(alwaysRun = true)
+    @BeforeMethod
     public void exampleBeforeMethod() {
         System.out.println("Creating temporary directory.");
         try {
@@ -47,7 +45,7 @@ public class CreateNewFileTestBase {
         }
     }
 
-    @AfterClass(alwaysRun = true)
+    @AfterMethod
     public void exampleAfterMethod(){
         System.out.println("Removing temporary directory.");
         try {
