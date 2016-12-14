@@ -2,7 +2,6 @@ package com.softwaretestingtraning.app;
 
 import org.testng.Assert;
 import org.testng.annotations.*;
-
 import java.io.File;
 import java.io.IOException;
 
@@ -10,16 +9,12 @@ import java.io.IOException;
 public class CreateNewFilePositiveTest extends CreateNewFileTestBase {
 
     @Test(groups = {"positive"})
-    public void testFileCreationParameters() {
+    public void testFileCreationParameters() throws IOException {
         System.out.println("Running first positive test");
-        try {
-            File file = new File(fileName);
-            Assert.assertTrue(file.createNewFile(), "File already exists. Your cleanup method is probably broken.");
-            Assert.assertTrue(file.exists(), "File creation failed.");
-            Assert.assertEquals(file.length(), 0, "Created file is not empty.");
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
-        }
+        File file = new File(fileName);
+        Assert.assertTrue(file.createNewFile(), "File already exists. Your cleanup method is probably broken.");
+        Assert.assertTrue(file.exists(), "File creation failed.");
+        Assert.assertEquals(file.length(), 0, "Created file is not empty.");
     }
 
     @Test(groups = {"positive", "broken"})
