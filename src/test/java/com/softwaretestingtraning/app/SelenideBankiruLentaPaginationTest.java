@@ -26,6 +26,8 @@ public class SelenideBankiruLentaPaginationTest {
         Configuration.timeout = 10000;
         System.setProperty("webdriver.chrome.driver", "/usr/lib/chromium-browser/chromedriver");
         open("http://www.banki.ru/news/lenta/");
+        // Let's disable fullscreen banner
+        executeJavaScript("document.addEventListener(\"DOMContentLoaded\", function() {require([\"jquery\"], function ($) {$(\".b-ad-fullscreen\").parent(\".ui-popup-holder\").remove();});});");
     }
 
     @Test(groups = {"positive", "selenium"})
