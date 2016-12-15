@@ -1,5 +1,4 @@
-# software-testing-lessons-java
-https://github.com/Vla8islav/software-testing-lessons-java
+# Banki.ru selenide example tests
 
-It's for the series of lessons to learn JUnit and TestNG on a software-testing.ru portal.
-
+Selenide + maven + TestNG
+The program assumes that you have chromedriver in /usr/lib/chromium-browser/chromedriver
