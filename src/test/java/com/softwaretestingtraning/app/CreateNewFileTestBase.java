@@ -1,20 +1,22 @@
 package com.softwaretestingtraning.app;
 
 import org.apache.commons.io.FileUtils;
-import org.testng.annotations.*;
+import org.junit.After;
+import org.junit.Before;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-@Test
-public class CreateNewFileTestBase {
+
+class CreateNewFileTestBase {
 
     Path tempDirectory;
     Path tempDirectory2;
     String fileName;
 
-    @BeforeMethod(alwaysRun = true)
+    @Before
     public void exampleBeforeMethod() throws IOException {
         System.out.println("Creating temporary directory.");
         tempDirectory = Files.createTempDirectory("test-createNewFile-directory");
@@ -23,7 +25,7 @@ public class CreateNewFileTestBase {
         System.out.println("TMP: " + tempDirectory.toString());
     }
 
-    @AfterMethod(alwaysRun = true)
+    @After
     public void exampleAfterMethod() throws IOException {
         System.out.println("Removing temporary directory.");
         FileUtils.deleteDirectory(new File(tempDirectory.toString()));
