@@ -5,7 +5,7 @@
         <classes>
             <class name="com.softwaretestingtraning.app.CreateNewFilePositiveTest" >
                 <methods>
-                    <include name="testFileIsEmpty" />
+                    <include name="testCreateFilesWithUnusualValidFilenames" />
                 </methods>
             </class>
             <class name="com.softwaretestingtraning.app.CreateNewFileNegativeTest" >

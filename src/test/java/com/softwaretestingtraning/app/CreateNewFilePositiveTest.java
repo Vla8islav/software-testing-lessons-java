@@ -5,7 +5,6 @@ import org.testng.annotations.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 
 @Test
 public class CreateNewFilePositiveTest extends CreateNewFileTestBase {

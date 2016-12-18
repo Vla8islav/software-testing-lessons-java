@@ -49,6 +49,8 @@
                 <configuration>
                     <suiteXmlFiles>
                         <suiteXmlFile>src/test/resources/testing-positive-before-negative.xml</suiteXmlFile>
+                        <suiteXmlFile>src/test/resources/testng-methods.xml</suiteXmlFile>
+                        <suiteXmlFile>src/test/resources/testng-packages-by-tag.xml</suiteXmlFile>
                     </suiteXmlFiles>
                 </configuration>
             </plugin>
