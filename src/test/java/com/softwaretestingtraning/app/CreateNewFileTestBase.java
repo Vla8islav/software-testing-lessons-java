@@ -19,10 +19,10 @@ import java.util.Set;
 @Test
 public class CreateNewFileTestBase {
 
-    protected Path tempDirectory;
-    protected Path tempDirectory2;
-    protected Path tempDirectoryWithoutWritingPermissions;
-    protected String fileName;
+    Path tempDirectory;
+    Path tempDirectory2;
+    Path tempDirectoryWithoutWritingPermissions;
+    String fileName;
 
     @BeforeClass(alwaysRun = true)
     public void exampleBeforeMethod() {
