@@ -21,10 +21,11 @@ import java.util.Set;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 class CreateNewFileTestBase {
 
-    public Path tempDirectory;
-    public Path tempDirectory2;
-    public String fileName;
-    public Path tempDirectoryWithoutWritingPermissions;
+    Path tempDirectory;
+    Path tempDirectory2;
+    String fileName;
+    Path tempDirectoryWithoutWritingPermissions;
+
     @Before
     public void beforeZ() throws Throwable {
         System.out.println("Creating temporary directory.");
