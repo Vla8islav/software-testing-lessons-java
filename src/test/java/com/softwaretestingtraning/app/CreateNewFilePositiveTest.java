@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class CreateNewFilePositiveTest extends CreateNewFileTestBase {
         Assert.assertThat("File creation failed.",
                 file.exists(), is(true));
         Assert.assertThat("Created file is not empty.",
-                file.length(), is(equalTo(0L)));
+                file.length(), is(0L));
     }
 
     @Test
@@ -41,13 +42,13 @@ public class CreateNewFilePositiveTest extends CreateNewFileTestBase {
     public void testFileIsEmptyIncorrect() {
         File file = new File(fileName);
         Assert.assertThat("Created file is not empty.",
-                file.length(), is(1));
+                file.length(), is(1L));
     }
 
     @DataProvider
     public static Object[][] loadFilenameFromFile() throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(
-                DataProviders.class.getResourceAsStream("/UnusualFilenames.data")));
+                CreateNewFilePositiveTest.class.getResourceAsStream("/UnusualFilenames.data")));
 
         List<Object[]> userData = new ArrayList<Object[]>();
         String line = in.readLine();
@@ -58,11 +59,14 @@ public class CreateNewFilePositiveTest extends CreateNewFileTestBase {
 
         in.close();
 
-        Object[] array = userData.toArray(new Object[userData.size()]);
-
-        Object[][] array2 = new Object[][]{{"someStubString"}};
-
-        return array2;
+        // TODO: Rewrite this dirty method in the future
+        Object[][] b = new Object[userData.size()][];
+        for (int i = 0; i < userData.size(); i++)
+        {
+            String currentObject =  userData.get(i)[0].toString();
+            b[i] = new Object[] {currentObject};
+        }
+        return b;
     }
 
     @Test
