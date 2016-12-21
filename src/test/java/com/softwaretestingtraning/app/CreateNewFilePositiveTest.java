@@ -4,8 +4,10 @@ import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
+import org.junit.rules.RuleChain;
 import org.junit.runner.RunWith;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -23,6 +25,10 @@ import java.util.List;
 
 @RunWith(DataProviderRunner.class)
 public class CreateNewFilePositiveTest extends CreateNewFileTestBase {
+
+    @Rule
+    public RuleChain rules = RuleChain
+            .outerRule(baseFileRule);
 
     @Test
     @Category({PositiveTests.class})

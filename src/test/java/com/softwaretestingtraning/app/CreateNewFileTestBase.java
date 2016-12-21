@@ -26,7 +26,6 @@ public class CreateNewFileTestBase {
     String fileName;
     Path tempDirectoryWithoutWritingPermissions;
 
-    @Rule
     public ExternalResource baseFileRule = new ExternalResource() {
         @Override
         public void before() throws Throwable {

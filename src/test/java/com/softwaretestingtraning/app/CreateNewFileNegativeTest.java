@@ -7,6 +7,8 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import org.apache.commons.io.FileUtils;
 import org.junit.*;
 import org.junit.experimental.categories.Category;
+import org.junit.rules.ExternalResource;
+import org.junit.rules.RuleChain;
 import org.junit.runner.RunWith;
 
 import java.io.File;
@@ -27,28 +29,36 @@ import static org.hamcrest.CoreMatchers.is;
 @RunWith(DataProviderRunner.class)
 public class CreateNewFileNegativeTest extends CreateNewFileTestBase {
 
-    @Before
-    public void beforeX()  throws Throwable {
-        System.out.println("Creating temporary directory without writing permissions");
-        Set<PosixFilePermission> perms =
-                PosixFilePermissions.fromString("r-xr-xr-x");
-        FileAttribute<Set<PosixFilePermission>> attr =
-                PosixFilePermissions.asFileAttribute(perms);
-        Path nonWritableDir = Paths.get(tempDirectory.toString(), "nonWritableDir");
-        tempDirectoryWithoutWritingPermissions = Files.createDirectory(nonWritableDir, attr);
-    }
 
-    @After
-    public void afterX() {
-        System.out.println("Removing temporary directory.");
-        try {
-            FileUtils.deleteDirectory(new File(tempDirectoryWithoutWritingPermissions.toString()));
+    public ExternalResource negativeFileRule = new ExternalResource() {
+        @Override
+        public void before() throws Throwable {
+            System.out.println("Creating temporary directory without writing permissions");
+            Set<PosixFilePermission> perms =
+                    PosixFilePermissions.fromString("r-xr-xr-x");
+            FileAttribute<Set<PosixFilePermission>> attr =
+                    PosixFilePermissions.asFileAttribute(perms);
+            Path nonWritableDir = Paths.get(tempDirectory.toString(), "nonWritableDir");
+            tempDirectoryWithoutWritingPermissions = Files.createDirectory(nonWritableDir, attr);
         }
-        catch (IOException e)
-        {
-            System.err.println(e.getMessage());
+
+        @Override
+        public void after() {
+            System.out.println("Removing temporary directory.");
+            try {
+                FileUtils.deleteDirectory(new File(tempDirectoryWithoutWritingPermissions.toString()));
+            }
+            catch (IOException e)
+            {
+                System.err.println(e.getMessage());
+            }
         }
-    }
+    };
+
+    @Rule
+    public RuleChain rules = RuleChain
+            .outerRule(baseFileRule)
+            .around(negativeFileRule);
 
     @Test
     @Category({NegativeTests.class})
