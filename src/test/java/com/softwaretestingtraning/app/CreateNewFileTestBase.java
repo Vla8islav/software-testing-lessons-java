@@ -19,7 +19,7 @@ import java.nio.file.attribute.PosixFilePermissions;
 import java.util.Set;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-class CreateNewFileTestBase {
+public class CreateNewFileTestBase {
 
     Path tempDirectory;
     Path tempDirectory2;
