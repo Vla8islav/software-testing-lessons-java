@@ -26,26 +26,29 @@ public class CreateNewFileTestBase {
     String fileName;
     Path tempDirectoryWithoutWritingPermissions;
 
-    @Before
-    public void beforeZ() throws Throwable {
-        System.out.println("Creating temporary directory.");
-        tempDirectory = Files.createTempDirectory("test-createNewFile-directory");
-        tempDirectory2 = Files.createTempDirectory("test-createNewFile-directory-2");
-        fileName = tempDirectory.toString() + "/test-filename-fixed";
-        System.out.println("TMP: " + tempDirectory.toString());
-    }
-
-    @After
-    public void afterZ() {
-        System.out.println("Removing temporary directory.");
-        try {
-            FileUtils.deleteDirectory(new File(tempDirectory.toString()));
-            FileUtils.deleteDirectory(new File(tempDirectory2.toString()));
+    @Rule
+    public ExternalResource baseFileRule = new ExternalResource() {
+        @Override
+        public void before() throws Throwable {
+            System.out.println("Creating temporary directory.");
+            tempDirectory = Files.createTempDirectory("test-createNewFile-directory");
+            tempDirectory2 = Files.createTempDirectory("test-createNewFile-directory-2");
+            fileName = tempDirectory.toString() + "/test-filename-fixed";
+            System.out.println("TMP: " + tempDirectory.toString());
         }
-        catch (IOException e)
-        {
-            System.err.println(e.getMessage());
-        }
-    }
 
+        @Override
+        public void after() {
+            System.out.println("Removing temporary directory.");
+            try {
+                FileUtils.deleteDirectory(new File(tempDirectory.toString()));
+                FileUtils.deleteDirectory(new File(tempDirectory2.toString()));
+            }
+            catch (IOException e)
+            {
+                System.err.println(e.getMessage());
+            }
+        }
+
+    };
 }
