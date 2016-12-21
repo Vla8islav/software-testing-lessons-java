@@ -33,7 +33,7 @@ public class CreateNewFileNegativeTest extends CreateNewFileTestBase {
 
     private ExternalResource negativeFileRule = new ExternalResource() {
         @Override
-        public void before() throws Throwable {
+        protected void before() throws Throwable {
             System.out.println("Creating temporary directory without writing permissions");
             tempDirectory2 = Files.createTempDirectory("test-createNewFile-directory-2");
             Set<PosixFilePermission> perms =
@@ -45,7 +45,7 @@ public class CreateNewFileNegativeTest extends CreateNewFileTestBase {
         }
 
         @Override
-        public void after() {
+        protected void after() {
             System.out.println("Removing temporary directory.");
             try {
                 FileUtils.deleteDirectory(new File(tempDirectoryWithoutWritingPermissions.toString()));

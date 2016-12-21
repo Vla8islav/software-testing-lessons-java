@@ -27,7 +27,7 @@ class CreateNewFileTestBase {
 
     ExternalResource baseFileRule = new ExternalResource() {
         @Override
-        public void before() throws Throwable {
+        protected void before() throws Throwable {
             System.out.println("Creating temporary directory.");
             tempDirectory = Files.createTempDirectory("test-createNewFile-directory");
             fileName = tempDirectory.toString() + "/test-filename-fixed";
@@ -35,7 +35,7 @@ class CreateNewFileTestBase {
         }
 
         @Override
-        public void after() {
+        protected void after() {
             System.out.println("Removing temporary directory.");
             try {
                 FileUtils.deleteDirectory(new File(tempDirectory.toString()));
@@ -45,6 +45,5 @@ class CreateNewFileTestBase {
                 System.err.println(e.getMessage());
             }
         }
-
     };
 }
