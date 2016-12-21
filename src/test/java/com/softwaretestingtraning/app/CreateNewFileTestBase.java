@@ -19,19 +19,17 @@ import java.nio.file.attribute.PosixFilePermissions;
 import java.util.Set;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class CreateNewFileTestBase {
+class CreateNewFileTestBase {
 
     Path tempDirectory;
-    Path tempDirectory2;
     String fileName;
     Path tempDirectoryWithoutWritingPermissions;
 
-    public ExternalResource baseFileRule = new ExternalResource() {
+    ExternalResource baseFileRule = new ExternalResource() {
         @Override
         public void before() throws Throwable {
             System.out.println("Creating temporary directory.");
             tempDirectory = Files.createTempDirectory("test-createNewFile-directory");
-            tempDirectory2 = Files.createTempDirectory("test-createNewFile-directory-2");
             fileName = tempDirectory.toString() + "/test-filename-fixed";
             System.out.println("TMP: " + tempDirectory.toString());
         }
@@ -41,7 +39,6 @@ public class CreateNewFileTestBase {
             System.out.println("Removing temporary directory.");
             try {
                 FileUtils.deleteDirectory(new File(tempDirectory.toString()));
-                FileUtils.deleteDirectory(new File(tempDirectory2.toString()));
             }
             catch (IOException e)
             {

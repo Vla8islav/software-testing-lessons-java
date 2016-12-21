@@ -29,11 +29,13 @@ import static org.hamcrest.CoreMatchers.is;
 @RunWith(DataProviderRunner.class)
 public class CreateNewFileNegativeTest extends CreateNewFileTestBase {
 
+    private Path tempDirectory2;
 
-    public ExternalResource negativeFileRule = new ExternalResource() {
+    private ExternalResource negativeFileRule = new ExternalResource() {
         @Override
         public void before() throws Throwable {
             System.out.println("Creating temporary directory without writing permissions");
+            tempDirectory2 = Files.createTempDirectory("test-createNewFile-directory-2");
             Set<PosixFilePermission> perms =
                     PosixFilePermissions.fromString("r-xr-xr-x");
             FileAttribute<Set<PosixFilePermission>> attr =
@@ -47,9 +49,8 @@ public class CreateNewFileNegativeTest extends CreateNewFileTestBase {
             System.out.println("Removing temporary directory.");
             try {
                 FileUtils.deleteDirectory(new File(tempDirectoryWithoutWritingPermissions.toString()));
-            }
-            catch (IOException e)
-            {
+                FileUtils.deleteDirectory(new File(tempDirectory2.toString()));
+            } catch (IOException e) {
                 System.err.println(e.getMessage());
             }
         }
