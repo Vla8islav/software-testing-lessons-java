@@ -10,17 +10,14 @@ import org.junit.experimental.categories.Category;
 import org.junit.rules.RuleChain;
 import org.junit.runner.RunWith;
 
-import static org.hamcrest.CoreMatchers.*;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
+
+import static org.hamcrest.CoreMatchers.is;
 
 
 @RunWith(DataProviderRunner.class)
@@ -56,7 +53,7 @@ public class CreateNewFilePositiveTest extends CreateNewFileTestBase {
         BufferedReader in = new BufferedReader(new InputStreamReader(
                 CreateNewFilePositiveTest.class.getResourceAsStream("/UnusualFilenames.data")));
 
-        List<Object[]> userData = new ArrayList<Object[]>();
+        List<Object[]> userData = new ArrayList<>();
         String line = in.readLine();
         while (line != null) {
             userData.add(line.split(";"));

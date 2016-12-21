@@ -1,14 +1,10 @@
 package com.softwaretestingtraning.app;
 
 import com.codeborne.selenide.Configuration;
-import org.apache.commons.io.FileUtils;
-import org.junit.*;
+import org.junit.ClassRule;
+import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.rules.ExternalResource;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;

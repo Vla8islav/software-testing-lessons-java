@@ -1,22 +1,14 @@
 package com.softwaretestingtraning.app;
 
 import org.apache.commons.io.FileUtils;
-import org.junit.*;
+import org.junit.FixMethodOrder;
 import org.junit.rules.ExternalResource;
-import org.junit.rules.RuleChain;
-import org.junit.runner.Description;
 import org.junit.runners.MethodSorters;
-import org.junit.runners.model.Statement;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.attribute.FileAttribute;
-import java.nio.file.attribute.PosixFilePermission;
-import java.nio.file.attribute.PosixFilePermissions;
-import java.util.Set;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 class CreateNewFileTestBase {
