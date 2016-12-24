@@ -31,7 +31,7 @@ public class CreateNewFilePositiveTest extends CreateNewFileTestBase {
     @Category({PositiveTests.class})
     public void testFileCreationParameters() throws IOException {
         System.out.println("Running first positive test");
-        File file = new File(fileName);
+        File file = new File(baseFileRule.fileName);
         Assert.assertThat("File already exists. Something went wrong during the preparation.",
                 file.createNewFile(), is(true));
         Assert.assertThat("File creation failed.",
@@ -43,7 +43,7 @@ public class CreateNewFilePositiveTest extends CreateNewFileTestBase {
     @Test
     @Category({PositiveTests.class, BrokenTests.class})
     public void testFileIsEmptyIncorrect() {
-        File file = new File(fileName);
+        File file = new File(baseFileRule.fileName);
         Assert.assertThat("Created file is not empty.",
                 file.length(), is(1L));
     }
@@ -75,7 +75,7 @@ public class CreateNewFilePositiveTest extends CreateNewFileTestBase {
     @Category({PositiveTests.class, BrokenTests.class})
     @UseDataProvider("loadFilenameFromFile")
     public void testCreateFilesWithUnusualValidFilenames(String currentFileName) throws IOException {
-        String currentFullFileName = tempDirectory.toString() + "/" + currentFileName;
+        String currentFullFileName = baseFileRule.tempDirectory.toString() + "/" + currentFileName;
         File file = new File(currentFullFileName);
         Assert.assertThat("Unable to create file named " + currentFileName,
                 file.createNewFile(), is(true));

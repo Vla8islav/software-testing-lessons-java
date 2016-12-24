@@ -42,7 +42,7 @@ public class CreateNewFileNegativeTest extends CreateNewFileTestBase {
                     PosixFilePermissions.fromString("r-xr-xr-x");
             FileAttribute<Set<PosixFilePermission>> attr =
                     PosixFilePermissions.asFileAttribute(perms);
-            Path nonWritableDir = Paths.get(tempDirectory.toString(), "nonWritableDir");
+            Path nonWritableDir = Paths.get(baseFileRule.tempDirectory.toString(), "nonWritableDir");
             tempDirectoryWithoutWritingPermissions = Files.createDirectory(nonWritableDir, attr);
         }
 
@@ -67,7 +67,7 @@ public class CreateNewFileNegativeTest extends CreateNewFileTestBase {
     @Category({NegativeTests.class})
     public void testAttemptToCreateAFileInWithTheIncorrectFilename() throws IOException {
         System.out.println("Running first negative test.");
-        String fileNameInvalidDirectory = tempDirectory.toString() + "//";
+        String fileNameInvalidDirectory = baseFileRule.tempDirectory.toString() + "//";
         File file = new File(fileNameInvalidDirectory);
         Assert.assertThat("You just successfully created the file named '/'. It's not allowed it Windows and in most -nix distributions.",
                 file.createNewFile(), is(false));
@@ -85,7 +85,7 @@ public class CreateNewFileNegativeTest extends CreateNewFileTestBase {
     @Test
     @Category({NegativeTests.class})
     public void testFileCannotBeCreatedIfAlreadyExists() throws IOException {
-        File file = new File(fileName);
+        File file = new File(baseFileRule.fileName);
         Assert.assertThat("Something went wrong during the test. The target directory is not empty",
                 file.createNewFile(), is(true));
         Assert.assertThat("Successfully created already existing file.",
