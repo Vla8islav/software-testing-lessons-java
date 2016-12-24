@@ -5,8 +5,12 @@ import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import org.apache.commons.io.FileUtils;
-import org.junit.*;
+import org.junit.Assert;
+import org.junit.Rule;
+import org.junit.Test;
 import org.junit.experimental.categories.Category;
+import org.junit.rules.ExternalResource;
+import org.junit.rules.RuleChain;
 import org.junit.runner.RunWith;
 
 import java.io.File;
@@ -17,9 +21,9 @@ import java.nio.file.Paths;
 import java.nio.file.attribute.FileAttribute;
 import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
-import java.util.Set;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import static java.lang.Math.pow;
 import static org.hamcrest.CoreMatchers.is;
@@ -27,28 +31,37 @@ import static org.hamcrest.CoreMatchers.is;
 @RunWith(DataProviderRunner.class)
 public class CreateNewFileNegativeTest extends CreateNewFileTestBase {
 
-    @Before
-    public void beforeX()  throws Throwable {
-        System.out.println("Creating temporary directory without writing permissions");
-        Set<PosixFilePermission> perms =
-                PosixFilePermissions.fromString("r-xr-xr-x");
-        FileAttribute<Set<PosixFilePermission>> attr =
-                PosixFilePermissions.asFileAttribute(perms);
-        Path nonWritableDir = Paths.get(tempDirectory.toString(), "nonWritableDir");
-        tempDirectoryWithoutWritingPermissions = Files.createDirectory(nonWritableDir, attr);
-    }
+    private Path tempDirectory2;
 
-    @After
-    public void afterX() {
-        System.out.println("Removing temporary directory.");
-        try {
-            FileUtils.deleteDirectory(new File(tempDirectoryWithoutWritingPermissions.toString()));
+    private ExternalResource negativeFileRule = new ExternalResource() {
+        @Override
+        protected void before() throws Throwable {
+            System.out.println("Creating temporary directory without writing permissions");
+            tempDirectory2 = Files.createTempDirectory("test-createNewFile-directory-2");
+            Set<PosixFilePermission> perms =
+                    PosixFilePermissions.fromString("r-xr-xr-x");
+            FileAttribute<Set<PosixFilePermission>> attr =
+                    PosixFilePermissions.asFileAttribute(perms);
+            Path nonWritableDir = Paths.get(tempDirectory.toString(), "nonWritableDir");
+            tempDirectoryWithoutWritingPermissions = Files.createDirectory(nonWritableDir, attr);
         }
-        catch (IOException e)
-        {
-            System.err.println(e.getMessage());
+
+        @Override
+        protected void after() {
+            System.out.println("Removing temporary directory.");
+            try {
+                FileUtils.deleteDirectory(new File(tempDirectoryWithoutWritingPermissions.toString()));
+                FileUtils.deleteDirectory(new File(tempDirectory2.toString()));
+            } catch (IOException e) {
+                System.err.println(e.getMessage());
+            }
         }
-    }
+    };
+
+    @Rule
+    public RuleChain rules = RuleChain
+            .outerRule(baseFileRule)
+            .around(negativeFileRule);
 
     @Test
     @Category({NegativeTests.class})
