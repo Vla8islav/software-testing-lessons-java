@@ -14,6 +14,7 @@ class BaseFileRule extends ExternalResource {
 
     @Override
     protected void before() throws Throwable {
+
         System.out.println("Creating temporary directory.");
         tempDirectory = Files.createTempDirectory("test-createNewFile-directory");
         fileName = tempDirectory.toString() + "/test-filename-fixed";

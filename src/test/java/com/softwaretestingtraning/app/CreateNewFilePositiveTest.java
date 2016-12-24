@@ -25,7 +25,7 @@ public class CreateNewFilePositiveTest extends CreateNewFileTestBase {
 
     @Rule
     public RuleChain rules = RuleChain
-            .outerRule(baseFileRule);
+            .outerRule(baseFileRule).around(repetitionRule);
 
     @Test
     @Category({PositiveTests.class})
@@ -42,6 +42,7 @@ public class CreateNewFilePositiveTest extends CreateNewFileTestBase {
 
     @Test
     @Category({PositiveTests.class, BrokenTests.class})
+    @NeedsRepetition
     public void testFileIsEmptyIncorrect() {
         File file = new File(baseFileRule.fileName);
         Assert.assertThat("Created file is not empty.",
@@ -72,7 +73,7 @@ public class CreateNewFilePositiveTest extends CreateNewFileTestBase {
     }
 
     @Test
-    @Category({PositiveTests.class, BrokenTests.class})
+    @Category({PositiveTests.class})
     @UseDataProvider("loadFilenameFromFile")
     public void testCreateFilesWithUnusualValidFilenames(String currentFileName) throws IOException {
         String currentFullFileName = baseFileRule.tempDirectory.toString() + "/" + currentFileName;

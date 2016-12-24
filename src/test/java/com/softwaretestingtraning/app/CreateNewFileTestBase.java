@@ -10,5 +10,6 @@ import java.nio.file.Path;
 class CreateNewFileTestBase {
 
     BaseFileRule baseFileRule = new BaseFileRule();
+    RepetitionRule repetitionRule = new RepetitionRule();
 
 }
