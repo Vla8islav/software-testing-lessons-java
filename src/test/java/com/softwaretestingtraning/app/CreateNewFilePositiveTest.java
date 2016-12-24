@@ -50,7 +50,7 @@ public class CreateNewFilePositiveTest extends CreateNewFileTestBase {
         BufferedReader in = new BufferedReader(new InputStreamReader(
                 CreateNewFilePositiveTest.class.getResourceAsStream("/UnusualFilenames.data")));
 
-        List<Object[]> userData = new ArrayList<Object[]>();
+        List<Object[]> userData = new ArrayList<>();
         String line = in.readLine();
         while (line != null) {
             userData.add(line.split(";"));
@@ -61,10 +61,9 @@ public class CreateNewFilePositiveTest extends CreateNewFileTestBase {
 
         // TODO: Rewrite this dirty method in the future
         Object[][] b = new Object[userData.size()][];
-        for (int i = 0; i < userData.size(); i++)
-        {
-            String currentObject =  userData.get(i)[0].toString();
-            b[i] = new Object[] {currentObject};
+        for (int i = 0; i < userData.size(); i++) {
+            String currentObject = userData.get(i)[0].toString();
+            b[i] = new Object[]{currentObject};
         }
         return b;
     }
@@ -72,15 +71,11 @@ public class CreateNewFilePositiveTest extends CreateNewFileTestBase {
     @Test
     @Category({PositiveTests.class, BrokenTests.class})
     @UseDataProvider("loadFilenameFromFile")
-    public void testCreateFilesWithUnusualValidFilenames(String currentFileName) {
+    public void testCreateFilesWithUnusualValidFilenames(String currentFileName) throws IOException {
         String currentFullFileName = tempDirectory.toString() + "/" + currentFileName;
         File file = new File(currentFullFileName);
-        try {
-            Assert.assertTrue(file.createNewFile()/*, "Unable to create file named " + currentFileName*/);
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
-        }
-
+        Assert.assertThat("Unable to create file named " + currentFileName,
+                file.createNewFile(), is(true));
     }
 }
 
