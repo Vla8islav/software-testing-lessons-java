@@ -9,8 +9,6 @@ import java.nio.file.Path;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 class CreateNewFileTestBase {
 
-    Path tempDirectoryWithoutWritingPermissions;
-
     BaseFileRule baseFileRule = new BaseFileRule();
 
 }

@@ -32,6 +32,7 @@ import static org.hamcrest.CoreMatchers.is;
 public class CreateNewFileNegativeTest extends CreateNewFileTestBase {
 
     private Path tempDirectory2;
+    private Path tempDirectoryWithoutWritingPermissions;
 
     private ExternalResource negativeFileRule = new ExternalResource() {
         @Override
