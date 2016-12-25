@@ -10,6 +10,11 @@ interface SeleniumTests { /* category marker */ }
 interface NegativeTests { /* category marker */ }
 interface LongTests { /* category marker */ }
 interface BrokenTests { /* category marker */ }
+interface UnstableTests { /* category marker */ }
+
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-@interface NeedsRepetition {}
+@interface Unstable {
+
+    int value();
+}

@@ -39,13 +39,31 @@ public class CreateNewFilePositiveTest extends CreateNewFileTestBase {
                 file.length(), is(0L));
     }
 
+
     @Test
     @Category({PositiveTests.class, BrokenTests.class})
-    @NeedsRepetition
     public void testFileIsEmptyIncorrect() {
         File file = new File(baseFileRule.fileName);
         Assert.assertThat("Created file is not empty.",
                 file.length(), is(1L));
+    }
+
+    static private int variableForTheUnstableTest = 0;
+    @Test
+    @Category({PositiveTests.class, UnstableTests.class})
+    @Unstable(2)
+    public void testFileIsEmptyUnstable() {
+        File file = new File(baseFileRule.fileName);
+        if(0 == variableForTheUnstableTest) {
+            variableForTheUnstableTest++;
+            Assert.assertThat("Created file is not empty.",
+                    file.length(), is(1L));
+        }
+        else
+        {
+            Assert.assertThat("Created file is not empty.",
+                    file.length(), is(0L));
+        }
     }
 
     @DataProvider
