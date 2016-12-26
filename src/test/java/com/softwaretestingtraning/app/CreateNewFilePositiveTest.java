@@ -9,7 +9,6 @@ import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.rules.RuleChain;
 import org.junit.runner.RunWith;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -25,13 +24,13 @@ public class CreateNewFilePositiveTest extends CreateNewFileTestBase {
 
     @Rule
     public RuleChain rules = RuleChain
-            .outerRule(baseFileRule);
+            .outerRule(baseFileRule).around(repetitionRule);
 
     @Test
     @Category({PositiveTests.class})
     public void testFileCreationParameters() throws IOException {
         System.out.println("Running first positive test");
-        File file = new File(fileName);
+        File file = new File(baseFileRule.fileName);
         Assert.assertThat("File already exists. Something went wrong during the preparation.",
                 file.createNewFile(), is(true));
         Assert.assertThat("File creation failed.",
@@ -40,12 +39,31 @@ public class CreateNewFilePositiveTest extends CreateNewFileTestBase {
                 file.length(), is(0L));
     }
 
+
     @Test
     @Category({PositiveTests.class, BrokenTests.class})
     public void testFileIsEmptyIncorrect() {
-        File file = new File(fileName);
+        File file = new File(baseFileRule.fileName);
         Assert.assertThat("Created file is not empty.",
                 file.length(), is(1L));
+    }
+
+    static private int variableForTheUnstableTest = 0;
+    @Test
+    @Category({PositiveTests.class, UnstableTests.class})
+    @Unstable(2)
+    public void testFileIsEmptyUnstable() {
+        File file = new File(baseFileRule.fileName);
+        if(0 == variableForTheUnstableTest) {
+            variableForTheUnstableTest++;
+            Assert.assertThat("Created file is not empty.",
+                    file.length(), is(1L));
+        }
+        else
+        {
+            Assert.assertThat("Created file is not empty.",
+                    file.length(), is(0L));
+        }
     }
 
     @DataProvider
@@ -64,26 +82,21 @@ public class CreateNewFilePositiveTest extends CreateNewFileTestBase {
 
         // TODO: Rewrite this dirty method in the future
         Object[][] b = new Object[userData.size()][];
-        for (int i = 0; i < userData.size(); i++)
-        {
-            String currentObject =  userData.get(i)[0].toString();
-            b[i] = new Object[] {currentObject};
+        for (int i = 0; i < userData.size(); i++) {
+            String currentObject = userData.get(i)[0].toString();
+            b[i] = new Object[]{currentObject};
         }
         return b;
     }
 
     @Test
-    @Category({PositiveTests.class, BrokenTests.class})
+    @Category({PositiveTests.class})
     @UseDataProvider("loadFilenameFromFile")
-    public void testCreateFilesWithUnusualValidFilenames(String currentFileName) {
-        String currentFullFileName = tempDirectory.toString() + "/" + currentFileName;
+    public void testCreateFilesWithUnusualValidFilenames(String currentFileName) throws IOException {
+        String currentFullFileName = baseFileRule.tempDirectory.toString() + "/" + currentFileName;
         File file = new File(currentFullFileName);
-        try {
-            Assert.assertTrue(file.createNewFile()/*, "Unable to create file named " + currentFileName*/);
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
-        }
-
+        Assert.assertThat("Unable to create file named " + currentFileName,
+                file.createNewFile(), is(true));
     }
 }
 

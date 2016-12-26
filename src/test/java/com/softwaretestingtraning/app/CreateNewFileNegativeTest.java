@@ -4,7 +4,6 @@ package com.softwaretestingtraning.app;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
-import org.apache.commons.io.FileUtils;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -15,15 +14,8 @@ import org.junit.runner.RunWith;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.attribute.FileAttribute;
-import java.nio.file.attribute.PosixFilePermission;
-import java.nio.file.attribute.PosixFilePermissions;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import static java.lang.Math.pow;
 import static org.hamcrest.CoreMatchers.is;
@@ -31,32 +23,7 @@ import static org.hamcrest.CoreMatchers.is;
 @RunWith(DataProviderRunner.class)
 public class CreateNewFileNegativeTest extends CreateNewFileTestBase {
 
-    private Path tempDirectory2;
-
-    private ExternalResource negativeFileRule = new ExternalResource() {
-        @Override
-        protected void before() throws Throwable {
-            System.out.println("Creating temporary directory without writing permissions");
-            tempDirectory2 = Files.createTempDirectory("test-createNewFile-directory-2");
-            Set<PosixFilePermission> perms =
-                    PosixFilePermissions.fromString("r-xr-xr-x");
-            FileAttribute<Set<PosixFilePermission>> attr =
-                    PosixFilePermissions.asFileAttribute(perms);
-            Path nonWritableDir = Paths.get(tempDirectory.toString(), "nonWritableDir");
-            tempDirectoryWithoutWritingPermissions = Files.createDirectory(nonWritableDir, attr);
-        }
-
-        @Override
-        protected void after() {
-            System.out.println("Removing temporary directory.");
-            try {
-                FileUtils.deleteDirectory(new File(tempDirectoryWithoutWritingPermissions.toString()));
-                FileUtils.deleteDirectory(new File(tempDirectory2.toString()));
-            } catch (IOException e) {
-                System.err.println(e.getMessage());
-            }
-        }
-    };
+    private NegativeFileRule negativeFileRule = new NegativeFileRule();
 
     @Rule
     public RuleChain rules = RuleChain
@@ -67,7 +34,7 @@ public class CreateNewFileNegativeTest extends CreateNewFileTestBase {
     @Category({NegativeTests.class})
     public void testAttemptToCreateAFileInWithTheIncorrectFilename() throws IOException {
         System.out.println("Running first negative test.");
-        String fileNameInvalidDirectory = tempDirectory.toString() + "//";
+        String fileNameInvalidDirectory = baseFileRule.tempDirectory.toString() + "//";
         File file = new File(fileNameInvalidDirectory);
         Assert.assertThat("You just successfully created the file named '/'. It's not allowed it Windows and in most -nix distributions.",
                 file.createNewFile(), is(false));
@@ -76,7 +43,7 @@ public class CreateNewFileNegativeTest extends CreateNewFileTestBase {
     @Test(expected = IOException.class)
     @Category({NegativeTests.class})
     public void testAttemptToCreateAFileInFolderWithoutWritingPermissions() throws IOException {
-        String fileNameInvalidDirectory = tempDirectoryWithoutWritingPermissions.toString() + "/filename";
+        String fileNameInvalidDirectory = negativeFileRule.tempDirectoryWithoutWritingPermissions.toString() + "/filename";
         File file = new File(fileNameInvalidDirectory);
         Assert.assertThat("You just successfully created the file in the directory without writing permissions.",
                 file.createNewFile(), is(false));
@@ -85,7 +52,7 @@ public class CreateNewFileNegativeTest extends CreateNewFileTestBase {
     @Test
     @Category({NegativeTests.class})
     public void testFileCannotBeCreatedIfAlreadyExists() throws IOException {
-        File file = new File(fileName);
+        File file = new File(baseFileRule.fileName);
         Assert.assertThat("Something went wrong during the test. The target directory is not empty",
                 file.createNewFile(), is(true));
         Assert.assertThat("Successfully created already existing file.",
@@ -114,15 +81,16 @@ public class CreateNewFileNegativeTest extends CreateNewFileTestBase {
 
         for (String fileNameCurrent : filenameList
                 ) {
-            String fileNameCurrentValid = tempDirectory2.toString() + "/" + fileNameCurrent;
+            String fileNameCurrentValid = baseFileRule.tempDirectory.toString() + "/" + fileNameCurrent;
             try {
                 File file = new File(fileNameCurrentValid);
-                Assert.assertThat("Cannot create file " + fileNameCurrent + "while attempting to create 2^16-1 files in a directory " + tempDirectory2,
+                Assert.assertThat("Cannot create file " + fileNameCurrent + "while attempting to create 2^16-1 files in a directory " + baseFileRule.tempDirectory,
                         file.createNewFile(), is(true));
             } catch (IOException e) {
                 System.err.println(e.getMessage());
             }
         }
     }
+
 }
 
