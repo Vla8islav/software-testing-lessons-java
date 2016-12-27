@@ -4,14 +4,13 @@ package com.softwaretestingtraning.app;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
+import org.apache.commons.lang.StringUtils;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
-import org.junit.rules.ExternalResource;
 import org.junit.rules.RuleChain;
 import org.junit.runner.RunWith;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,13 +29,15 @@ public class CreateNewFileNegativeTest extends CreateNewFileTestBase {
             .outerRule(baseFileRule)
             .around(negativeFileRule);
 
-    @Test
     @Category({NegativeTests.class})
-    public void testAttemptToCreateAFileInWithTheIncorrectFilename() throws IOException {
+    @Test(expected=IOException.class)
+    public void testAttemptToCreateAFileInWithFilenameLengthExceedingFilesystemLimits() throws IOException {
         System.out.println("Running first negative test.");
-        String fileNameInvalidDirectory = baseFileRule.tempDirectory.toString() + "//";
+        String fileNameInvalidDirectory = baseFileRule.tempDirectory.toString() + "/"
+                + StringUtils.rightPad("file-with-filename-longer-then-255-", 256, "0");
         File file = new File(fileNameInvalidDirectory);
-        Assert.assertThat("You just successfully created the file named '/'. It's not allowed it Windows and in most -nix distributions.",
+        Assert.assertThat("You just successfully created the file with name which 256 characters long." +
+                " It's not allowed it Windows and in most -nix distributions.",
                 file.createNewFile(), is(false));
     }
 
