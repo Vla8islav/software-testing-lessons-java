@@ -1,6 +1,5 @@
 package com.softwaretestingtraning.app;
 
-import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import org.junit.Assert;
@@ -9,14 +8,9 @@ import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.rules.RuleChain;
 import org.junit.runner.RunWith;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
-
-import static com.softwaretestingtraning.app.DataSource.Type.FILE;
+import static com.softwaretestingtraning.app.DataSource.Type.RESOURCE;
 import static org.hamcrest.CoreMatchers.is;
 
 
@@ -67,33 +61,10 @@ public class CreateNewFilePositiveTest extends CreateNewFileTestBase {
         }
     }
 
-    @DataProvider
-    public static Object[][] loadFilenameFromFile() throws IOException {
-        BufferedReader in = new BufferedReader(new InputStreamReader(
-                CreateNewFilePositiveTest.class.getResourceAsStream("/UnusualFilenames.data")));
-
-        List<Object[]> userData = new ArrayList<>();
-        String line = in.readLine();
-        while (line != null) {
-            userData.add(line.split(";"));
-            line = in.readLine();
-        }
-
-        in.close();
-
-        // TODO: Rewrite this dirty method in the future
-        Object[][] b = new Object[userData.size()][];
-        for (int i = 0; i < userData.size(); i++) {
-            String currentObject = userData.get(i)[0].toString();
-            b[i] = new Object[]{currentObject};
-        }
-        return b;
-    }
-
     @Test
     @Category({PositiveTests.class})
-    @UseDataProvider("loadFilenameFromFile")
-    @DataSource(value = "/UnusualFilenames.data", type = FILE)
+    @UseDataProvider(value = "dataSourceLoader", location = UniversalDataProviders.class)
+    @DataSource(value = "/UnusualFilenames.data", type = RESOURCE)
     public void testCreateFilesWithUnusualValidFilenames(String currentFileName) throws IOException {
         String currentFullFileName = baseFileRule.tempDirectory.toString() + "/" + currentFileName;
         File file = new File(currentFullFileName);
