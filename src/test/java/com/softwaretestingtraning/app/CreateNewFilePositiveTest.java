@@ -16,6 +16,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.softwaretestingtraning.app.DataSource.Type.FILE;
 import static org.hamcrest.CoreMatchers.is;
 
 
@@ -92,6 +93,7 @@ public class CreateNewFilePositiveTest extends CreateNewFileTestBase {
     @Test
     @Category({PositiveTests.class})
     @UseDataProvider("loadFilenameFromFile")
+    @DataSource(value = "/UnusualFilenames.data", type = FILE)
     public void testCreateFilesWithUnusualValidFilenames(String currentFileName) throws IOException {
         String currentFullFileName = baseFileRule.tempDirectory.toString() + "/" + currentFileName;
         File file = new File(currentFullFileName);

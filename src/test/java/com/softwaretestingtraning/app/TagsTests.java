@@ -18,3 +18,17 @@ interface UnstableTests { /* category marker */ }
 
     int value();
 }
+
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+@interface DataSource {
+
+    enum Type {
+        RESOURCE,
+        FILE
+    }
+
+    String value();
+    Type type();
+
+}
