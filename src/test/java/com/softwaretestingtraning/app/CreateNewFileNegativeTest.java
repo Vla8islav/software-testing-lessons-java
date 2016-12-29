@@ -6,29 +6,19 @@ import org.testng.annotations.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.FileAttribute;
 import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
+import java.util.HashSet;
 import java.util.Set;
 
 @Test
 public class CreateNewFileNegativeTest extends CreateNewFileTestBase {
 
-    private Path tempDirectoryWithoutWritingPermissions;
-
-    @BeforeMethod(alwaysRun = true)
-    public void beforeNegativeTests() throws IOException {
-        System.out.println("Creating temporary directory without writing permissions");
-        Set<PosixFilePermission> perms =
-                PosixFilePermissions.fromString("r-xr-xr-x");
-        FileAttribute<Set<PosixFilePermission>> attr =
-                PosixFilePermissions.asFileAttribute(perms);
-        Path nonWritableDir = Paths.get(tempDirectory.toString(), "nonWritableDir");
-        tempDirectoryWithoutWritingPermissions = Files.createDirectory(nonWritableDir, attr);
-    }
 
     @Test(groups = {"negative"})
     public void testAttemptToCreateAFileInWithTheIncorrectFilename() throws IOException {
@@ -39,8 +29,9 @@ public class CreateNewFileNegativeTest extends CreateNewFileTestBase {
     }
 
     @Test(groups = {"negative"}, expectedExceptions = { IOException.class })
+    @TempDir(read = true, write = false)
     public void testAttemptToCreateAFileInFolderWithoutWritingPermissions() throws IOException {
-        String fileNameInvalidDirectory = tempDirectoryWithoutWritingPermissions.toString() + "/filename";
+        String fileNameInvalidDirectory = tempDirectory.toString() + "/filename";
         File file = new File(fileNameInvalidDirectory);
         Assert.assertFalse(file.createNewFile(), "You just successfully created the file in the directory without writing permissions.");
     }
