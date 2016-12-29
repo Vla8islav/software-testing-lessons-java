@@ -30,7 +30,7 @@ public class CreateNewFileNegativeTest extends CreateNewFileTestBase {
 
     @Test(groups = {"negative"}, expectedExceptions = { IOException.class })
     @TempDir(read = true, write = false)
-    public void testAttemptToCreateAFileInFolderWithoutWritingPermissions() throws IOException {
+    public void cannotCreateFileInAReadOnlyDir() throws IOException {
         String fileNameInvalidDirectory = tempDirectory.toString() + "/filename";
         File file = new File(fileNameInvalidDirectory);
         Assert.assertFalse(file.createNewFile(), "You just successfully created the file in the directory without writing permissions.");
