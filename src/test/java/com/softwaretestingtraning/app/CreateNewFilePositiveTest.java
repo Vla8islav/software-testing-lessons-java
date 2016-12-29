@@ -19,10 +19,14 @@ public class CreateNewFilePositiveTest extends CreateNewFileTestBase {
         Assert.assertEquals(file.length(), 0, "Created file is not empty.");
     }
 
-    @Test(groups = {"positive", "broken"})
-    public void testFileIsEmptyIncorrect() {
-        File file = new File(fileName);
-        Assert.assertEquals(file.length(), 1, "Created file is not empty.");
+
+    @Test(groups = {"positive"}, dataProvider = "excelDataProvider", dataProviderClass = ExcelDataProviders.class)
+    @ExcelDataSource("UnusualFilenames.xls")
+    public void testCreateFilesWithUnusualValidFilenames(String currentFileName) throws IOException {
+        String currentFullFileName = tempDirectory.toString() + "/" + currentFileName;
+        File file = new File(currentFullFileName);
+        Assert.assertTrue(file.createNewFile(), "Unable to create file named " + currentFileName);
     }
+
 }
 
